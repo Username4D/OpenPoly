@@ -8,7 +8,7 @@ class Osc():
     volume: float = 1
     pitch_offset: int = 0
     fine_offset: float = 0
-    pitches: list = []
+    pitches = []
 
     def __init__(self, _wavetable: wavetables.Wavetable):
         self.wavetable = _wavetable
@@ -32,7 +32,3 @@ class Osc():
             generated_wave = np.resize(generated_wave, buffer_length)
             output = np.add(output, generated_wave)
         return output
-default_osc: Osc = Osc(wavetables.SineWave())
-default_osc.pitches = [48]
-sd.play(default_osc.render_buffer(44100))
-sd.wait()

@@ -19,4 +19,4 @@ class SquareWave(Wavetable):
 
 class SawWave(Wavetable):
     def get_wave(self, frame: float):
-        return frame - math.round(frame)
+        return frame - round(frame)
