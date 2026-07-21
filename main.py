@@ -35,7 +35,7 @@ while run:
             break
         if event.type == pygame.KEYDOWN:
             if event.key in note_keybinds:
-                osc_1.pitches.append(note_keybinds[event.key] + 24)
+                osc_1.pitch = (note_keybinds[event.key] + 24)
         if event.type == pygame.KEYUP:
             if event.key in note_keybinds:
-                osc_1.pitches.remove(note_keybinds[event.key] + 24)
+                osc_1.pitch = -1

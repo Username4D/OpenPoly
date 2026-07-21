@@ -8,17 +8,15 @@ class Osc():
     volume: float = 1
     pitch_offset: int = 0
     fine_offset: float = 0
-    pitches = []
+    pitch: int = -1
 
     def __init__(self, _wavetable: wavetables.Wavetable):
         self.wavetable = _wavetable
     
     def render_buffer(self, buffer_length: int):
-        duration: float = buffer_length / cfg.sample_rate
-        output = np.array([])
-        output = np.resize(output, buffer_length)
-        for i in self.pitches:
-            frequency = 2.0 ** ((float(i - 49 + self.pitch_offset)) / 12.0) * 440.0
+        if self.pitch != -1:
+            duration: float = buffer_length / cfg.sample_rate
+            frequency = 2.0 ** ((float(self.pitch - 49 + self.pitch_offset)) / 12.0) * 440.0
             wave_snapshot_length: int = round(cfg.sample_rate / frequency)
             wave_snapshot = np.array([])
             for i in range(0, wave_snapshot_length):
@@ -30,5 +28,8 @@ class Osc():
             print(generated_wave)
 
             generated_wave = np.resize(generated_wave, buffer_length)
-            output = np.add(output, generated_wave)
-        return output
+            return generated_wave
+        else:
+            array = np.array([])
+            array.resize(buffer_length)
+            return array
