@@ -1,4 +1,6 @@
+import numpy as np
 import pygame
+from config import sample_rate
 import osc
 import wavetables
 from pygame.constants import KEYDOWN
@@ -14,7 +16,16 @@ note_keybinds = {97: 1, 119: 2, 115: 3, 101: 4, 100: 5, 102: 6, 116: 7, 103: 8, 
 
 osc_1 = osc.Osc(wavetables.SawWave())
 
+def render_next_buffer(outdata:np.ndarray, frames: int, time, status: sd.CallbackFlags):
+    outdata[:, 1] = osc_1.render_buffer(frames)
 
+stream = sd.OutputStream(
+    blocksize=4100,
+    samplerate = sample_rate,
+    callback = render_next_buffer
+)
+
+stream.start()
 
 while run:
     for event in pygame.event.get():
@@ -28,5 +39,3 @@ while run:
         if event.type == pygame.KEYUP:
             if event.key in note_keybinds:
                 osc_1.pitches.remove(note_keybinds[event.key] + 24)
-    sd.play(osc_1.render_buffer(10000))
-    sd.wait()
