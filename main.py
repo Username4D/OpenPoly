@@ -14,13 +14,13 @@ pygame.display.update()
 run = True
 note_keybinds = {97: 1, 119: 2, 115: 3, 101: 4, 100: 5, 102: 6, 116: 7, 103: 8, 121: 9, 104: 10, 117: 11, 106: 12}
 
-osc_1 = osc.Osc(wavetables.SawWave())
+osc_1 = osc.Osc(wavetables.SineWave())
 
 def render_next_buffer(outdata:np.ndarray, frames: int, time, status: sd.CallbackFlags):
     outdata[:, 1] = osc_1.render_buffer(frames)
 
 stream = sd.OutputStream(
-    blocksize=4100,
+    blocksize=410,
     samplerate = sample_rate,
     callback = render_next_buffer
 )
@@ -39,3 +39,4 @@ while run:
         if event.type == pygame.KEYUP:
             if event.key in note_keybinds:
                 osc_1.pitch = -1
+                osc_1.offset = 0
